@@ -1,0 +1,35 @@
+name: "Kafka KRaft Broker"
+description: "Creates a simple Kafka KRaft broker for integration testing"
+author: "Spicy Parrot"
+branding:
+  icon: "alert-circle"
+  color: "purple"
+inputs:
+  kafka-version:
+    description: "Kafka version to use"
+    default: "3.6.1"
+    required: false
+  kafka-topics:
+    description: "A comma separated list of topics with their partition counts - e.g. foobar,10,test,5"
+    default: ""
+    required: false
+
+runs:
+  using: "composite"
+  steps:
+    - name: 🏗 Checkout Kafka kraft repo
+      uses: actions/checkout@v3
+      with:
+        repository: spicyparrot/kafka-kraft-action
+        path: "kafka"
+
+    - name: 🧠 Bring up KRaft Broker
+      working-directory: kafka
+      shell: bash
+      id: kafka
+      run: ./scripts/start.sh --version ${{ inputs.kafka-version }}
+
+    - name: 🪄 Create Kafka topics
+      working-directory: kafka
+      shell: bash
+      run: ./scripts/create_topics.sh --topics ${{ inputs.kafka-topics }}

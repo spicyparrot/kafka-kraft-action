@@ -1,0 +1,14 @@
+version: '3'
+
+services:
+  kafka:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      args:
+        KAFKA_VERSION: $KAFKA_VERSION
+        KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://localhost:9092,EXTERNAL://$ADVERTISED_HOSTNAME:9093
+    container_name: kafka
+    ports:
+      - "9092:9092"
+      - "9093:9093"
