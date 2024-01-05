@@ -1,10 +1,10 @@
 name: 📢 Create Release
 on: 
   workflow_dispatch:
-    inputs:
-      tag_name:
-        description: Tag Name
-        type: string
+
+concurrency:
+  group: create_release
+  cancel-in-progress: true
 
 env:
   RED: '\033[0;31m'
@@ -27,7 +27,7 @@ jobs:
   #        github_personal_token: ${{ secrets.ACTIONS_ACCESS_TOKEN }}  
 
   create_release:
-    name: 🏷 Create Tag
+    name: 📢 Create Release
     runs-on: ubuntu-latest
     #needs: [test]
     steps: 
