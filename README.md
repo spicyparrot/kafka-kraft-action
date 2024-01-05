@@ -39,16 +39,30 @@ jobs:
       uses: actions/checkout@v2
 
     - name: Run Kafka KRaft Broker
-      uses: your-username/your-repo@v1
+      uses: spicyparrot/kafka-kraft-action@v1.0.5
       with:
         kafka-version: "3.6.1"
         kafka-topics: "example,1"
 
+    # kafka_runner_address env var created by the above step
     - name: 🧪 Run Unit Tests
       uses: ./.github/actions/test
+      env:
+        KAFKA_BOOTSTRAP_SERVERS: ${{ env.kafka_runner_address }}:9093
   ```
 
 Ensure your Kafka bootstrap server references `$kafka_runner_address:9093` or `localhost:9092`.
+
+👆 In the above snippet, the unit tests action uses the environment variable `KAFKA_BOOTSTRAP_SERVERS` when instantiating a kafka consumer / producer. For e.g. 
+
+```python
+producer_conf = {
+        'bootstrap.servers': os.environ['KAFKA_BOOTSTRAP_SERVERS']
+    }
+producer = Producer(producer_conf)
+```
+
+We override that env var with the `kafka_runner_address` env var created by the *spicyparrot/kafka-kraft-action*.
 
 ### Inputs
 
