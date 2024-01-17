@@ -17,7 +17,7 @@ LABEL name="kafka" version=${KAFKA_VERSION}
 
 # Install bash
 RUN apk update \
- && apk add openssl=3.1.4-r1 \
+ && apk add openssl \
  && apk add bash \
  && apk add openjdk11 
 
