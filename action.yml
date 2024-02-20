@@ -18,7 +18,7 @@ runs:
   using: "composite"
   steps:
     - name: 🏗 Checkout Kafka kraft repo
-      uses: actions/checkout@v3
+      uses: actions/checkout@v4
       with:
         repository: spicyparrot/kafka-kraft-action
         path: "kafka"
