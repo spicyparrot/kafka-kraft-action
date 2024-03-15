@@ -39,7 +39,7 @@ jobs:
       uses: actions/checkout@v2
 
     - name: Run Kafka KRaft Broker
-      uses: spicyparrot/kafka-kraft-action@v1.0.5
+      uses: spicyparrot/kafka-kraft-action@v1.1.0
       with:
         kafka-version: "3.6.1"
         kafka-topics: "example,1"
