@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/sh
 
 # ANSI colour palette
 RESET='\033[0m'
@@ -16,8 +16,8 @@ log() {
 logColoured() {
     local colour="$1"
     local message="$2"
-    local before="${message%%:*}" # Extracts text before the first ":"
-    local after="${message#*:}"  # Extracts text after the first ":"
+    local before=$(echo "$message" | cut -d: -f1) # Extracts text before the first ":"
+    local after=$(echo "$message" | cut -d: -f2-)  # Extracts text after the first ":"
     echo -e "\n${before} ==> ${colour}${after}${RESET}"
 }
 

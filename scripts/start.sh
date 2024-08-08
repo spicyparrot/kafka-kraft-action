@@ -1,13 +1,13 @@
-#!/bin/bash
+#!/bin/sh
 
 # Constants
-SCRIPT_DIR="$(cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null && pwd)"
+SCRIPT_DIR="$(cd "$( dirname "$0" )" >/dev/null && pwd)"
 
 # Load in logging library
 . "${SCRIPT_DIR}/log.sh"
 
 # Extract kafka version from cmd line args
-while [[ $# -gt 0 ]];do
+while [ $# -gt 0 ]; do
     case $1 in
         --version)
             VERSION="$2"
@@ -22,20 +22,19 @@ while [[ $# -gt 0 ]];do
 done
 
 # Check that the arguments were passed correctly
-if [[ -z $VERSION ]]; then
+if [ -z "$VERSION" ]; then
     warn "Usage: $0 --version 3.6.1"
-    warn "Cant find a kafka version to use"
+    warn "Can't find a kafka version to use"
     exit 1
 fi
-
 
 # Detect operating system
 OS=$(uname -s)
 
 # Set private IP based on the operating system
-if [[ $OS == "Linux" ]]; then
+if [ "$OS" = "Linux" ]; then
     PRIVATE_IP=$(hostname -I | awk '{print $1}')
-elif [[ $OS == "Darwin" ]]; then
+elif [ "$OS" = "Darwin" ]; then
     PRIVATE_IP=$(ifconfig | grep 'inet ' | grep -v '127.0.0.1' | awk '{print $2}')
 else
     error "Unsupported operating system: $OS"
@@ -43,7 +42,7 @@ else
 fi
 
 # Check that the private IP address was detected
-if [[ -z $PRIVATE_IP ]]; then
+if [ -z "$PRIVATE_IP" ]; then
     error "Failed to detect the private IP address."
     exit 1
 fi
@@ -53,9 +52,9 @@ info "Detected Private IP Address: $PRIVATE_IP"
 sleep 3
 
 # Export detected IP as a global variable
-export ADVERTISED_HOSTNAME=$PRIVATE_IP
+export ADVERTISED_HOSTNAME="$PRIVATE_IP"
 # Export kafka version
-export KAFKA_VERSION=$VERSION
+export KAFKA_VERSION="$VERSION"
 
 info "Detected Kafka Version: $KAFKA_VERSION"
 
@@ -73,4 +72,4 @@ info "Please connect to the following IP_ADDRESS:PORT to access Kafka"
 docker logs "$(docker ps --format '{{.Names}}' | grep 'kafka' | grep -v 'kafka-ui')" | grep 'advertised.listeners'
 
 # Save the Kafka Address to a github env var so its reusable in other steps
-echo "kafka_runner_address=$PRIVATE_IP" >> $GITHUB_ENV
+echo "kafka_runner_address=$PRIVATE_IP" >> "$GITHUB_ENV"

@@ -25,11 +25,11 @@ runs:
 
     - name: 🧠 Bring up KRaft Broker
       working-directory: kafka
-      shell: bash
+      shell: sh
       id: kafka
       run: ./scripts/start.sh --version ${{ inputs.kafka-version }}
 
     - name: 🪄 Create Kafka topics
       working-directory: kafka
-      shell: bash
+      shell: sh
       run: ./scripts/create_topics.sh --topics ${{ inputs.kafka-topics }}
