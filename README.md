@@ -69,7 +69,7 @@ We override that env var with the `kafka_runner_address` env var created by the 
 - **`kafka-version`**
   - **Default:** `"3.7.0"`
   - **Description:** Version of Kafka to use
-  - **Required:** *False* (Defaults to `3.6.1`)
+  - **Required:** *False*
 
 - **`kafka-topics`**
   - **Default:** `""` 
